@@ -42,11 +42,15 @@ var Megaroster = function() {
       // Push the student name onto the students array
       // Use console.log to prove that the array has a new student
       self.students.push(student_name);
-      $('#students').empty();
-      for (i = 0; i < self.students.length; i++){
-        $('#students').append('<li>' + self.students[i] + '</li>');
-
-    }
+      //$('#students').empty();
+    //   for (i = 0; i < self.students.length; i++){
+    //     $('#students').append('<li>' + self.students[i] + '</li>');
+    //
+    // }
+      $('#students').append('<li class="list-group-item">' + student_name + '</li>');
+      $(this.student_name)
+        .val('')
+        .focus();
       console.log(self.students);
     });
 
