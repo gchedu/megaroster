@@ -41,8 +41,10 @@ self.incrementCounter = function(id) {
     li.removeAttr('id')
       .attr('data-id', self.id)
       .addClass('student')
-      .prepend(self.name)
+      //.prepend(self.name)
       .removeClass('hidden');
+
+    li.find('label').append(self.name);
     // Append an LI with the student name to the <ol>
     $('#students').append(li);
   };
