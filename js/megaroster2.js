@@ -13,9 +13,12 @@ var Megaroster = function() {
   this.load = function() {
     try {
       self.students = JSON.parse(localStorage.students);
-      $.each(self.students, function(index, student_name) {
+      $.each(self.students, function(index, student_data) {
         //$('#students').append('<li class="list-group-item">' + student_name + '</li>');
-        self.appendToList(student_name);
+        //self.appendToList(student_name);
+        var student = new Student();
+        student.init(student_data.name);
+        student.appendToList();
       });
     }
     catch(err) {
@@ -23,22 +26,26 @@ var Megaroster = function() {
     }
   };
 
-  this.appendToList = function(student_name) {
-    // Grab the *template* list item from the page.
-    var li = $('#list_item_template').clone();
-    li.removeAttr('id')
-      .addClass('student')
-      .prepend(student_name)
-      .removeClass('hidden');
-    // Append an LI with the student name to the <ol>
-    $('#students').append(li); //****could call a onclick listener here.****
-
-  };
+  // this.appendToList = function(student_name) {
+  //   // Grab the *template* list item from the page.
+  //   var li = $('#list_item_template').clone();
+  //   li.removeAttr('id')
+  //     .addClass('student')
+  //     .prepend(student_name)
+  //     .removeClass('hidden');
+  //   // Append an LI with the student name to the <ol>
+  //   $('#students').append(li); //****could call a onclick listener here.****
+  //
+  // };
 
   this.addStudent = function(student_name) {
-    self.students.push(student_name);
+    var student = new Student();
+    student.init(student_name);
+
+    self.students.push(student);
+    student.appendToList()
     //$('#students').append('<li class="list-group-item">' + student_name + '</li>');
-    self.appendToList(student_name);
+    //self.appendToList(student_name);
     console.log(self.save());
 
   };
