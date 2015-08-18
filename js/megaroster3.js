@@ -12,13 +12,12 @@ var Megaroster = function() {
 
   this.load = function() {
     try {
-      self.students = JSON.parse(localStorage.students);
-      $.each(self.students, function(index, student_data) {
-        //$('#students').append('<li class="list-group-item">' + student_name + '</li>');
-        //self.appendToList(student_name);
+      var student_data_objects = JSON.parse(localStorage.students);
+      $.each(student_data_objects, function(index, student_data) {
         var student = new Student();
         student.init(student_data);
         student.appendToList();
+        self.students.push(student);
       });
     }
     catch(err) {
@@ -27,27 +26,25 @@ var Megaroster = function() {
   };
 
   // this.appendToList = function(student_name) {
-  //   // Grab the *template* list item from the page.
   //   var li = $('#list_item_template').clone();
   //   li.removeAttr('id')
   //     .addClass('student')
   //     .prepend(student_name)
   //     .removeClass('hidden');
-  //   // Append an LI with the student name to the <ol>
-  //   $('#students').append(li); //****could call a onclick listener here.****
   //
+  //   $('#students').append(li);
   // };
 
   this.addStudent = function(student_name) {
     var student = new Student();
-    student.init({name: student_name});
+    student.init({
+      name: student_name
+    });
 
     self.students.push(student);
-    student.appendToList()
-    //$('#students').append('<li class="list-group-item">' + student_name + '</li>');
-    //self.appendToList(student_name);
-    console.log(self.save());
+    student.appendToList();
 
+    self.save();
   };
 
   this.init = function() {
@@ -55,10 +52,28 @@ var Megaroster = function() {
     Student.counter = 0;
     self.load();
 
+    $(document).on('click', 'button.delete', function(ev) {
+      var li = $(this).closest('li');
+
+      // Remove it from the array
+      var id = li.attr('data-id')
+
+      $.each(self.students, function(index, current_student) {
+        if (current_student.id.toString() === id.toString()) {
+          self.students.splice(index, 1);
+          return false;
+        }
+      });
+      //self.students.splice(self.students.indexOf(current_student), 1);
+
+      li.remove();
+      self.save();
+      // Update localStorage
+
+    });
 
     $('#new_student_form').on('submit', function (ev) {
       ev.preventDefault();
-
       var student_name = $(this.student_name).val();
 
       self.addStudent(student_name);
@@ -67,20 +82,7 @@ var Megaroster = function() {
         .val('')
         .focus();
     });
-
-    $(document).on('click','button.delete', function(){
-      var li = $(this).closest('li');
-      // Remove it from the array
-      var id = li.attr('data-id');
-      .students.remove(id);
-      // Remove it from the list
-      li.remove();
-
-      // Update localStorage
-
-    });
   };
-
 };
 
 var roster = new Megaroster();
