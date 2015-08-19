@@ -54,7 +54,7 @@ Student.getStudentById = function(id) {
   var student;
   $.each(roster.students, function(index, current_student){
     if (current_student.id.toString() === id.toString()) {
-      stsident = current_student;
+      student = current_student;
       return false;
     }
   });
